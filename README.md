@@ -97,8 +97,7 @@ The X-Ray service map shows the orchestrator calling the worker agents and the t
 ├── tests/test_agent.py          # provided test suite
 ├── diagrams/                    # architecture diagrams
 ├── imgs/                        # my test and X-Ray screenshots
-├── config.py                    # reads CloudFormation outputs and .env
-└── .env                         # my resource IDs (no AWS keys)
+└── config.py                    # reads CloudFormation outputs and .env
 ```
 
 ## How to run it
