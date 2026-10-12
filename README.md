@@ -113,6 +113,7 @@ The X-Ray service map shows the orchestrator calling the worker agents and the t
 python3.12 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+cp .env.example .env
 ```
 
 **2. Deploy the base infrastructure and add the sample data:**
