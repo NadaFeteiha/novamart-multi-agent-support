@@ -11,7 +11,7 @@ __pycache__/
 # ─────────────────────────────────────────────
 # Environment & Secrets
 # ─────────────────────────────────────────────
-.env
+# .env is part of the submission (resource IDs only, no AWS keys)
 .env.*
 !.env.example
 
