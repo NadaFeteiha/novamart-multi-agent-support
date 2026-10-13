@@ -55,6 +55,25 @@ I ran the three required scenarios:
 | "What is the return policy for premium customers?" | Orchestrator → Policy (3 retrievers in parallel) → Communication | Answer based on the policy documents |
 | "How much would 5 items at $29.99 be with a 10% discount?" | Orchestrator → Communication | $134.96 |
 
+Output of `python src/agent_orchestrator.py test`:
+
+**Scenario 1: return request.** Inventory looks up the order, then Refund approves it (Premium, 19 days, inside the 60-day window).
+
+![Return scenario: inventory](imgs/test_1_return_inventory.png)
+![Return scenario: refund approved](imgs/test_2_return_refund_approved.png)
+
+**Scenario 2: policy question.** The PolicyAgent runs the three retrievers in parallel, each one searching its own Knowledge Base, then the CommunicationAgent writes the answer.
+
+![Policy scenario: start](imgs/test_3_policy_start.png)
+![Policy scenario: parallel retrievers](imgs/test_4_policy_parallel_kbs.png)
+![Policy scenario: results from each KB](imgs/test_5_policy_kb_results.png)
+![Policy scenario: answer](imgs/test_6_policy_answer.png)
+
+**Scenario 3: math question.** The orchestrator goes straight to the CommunicationAgent.
+
+![Math scenario: routing](imgs/test_7_math_start.png)
+![Math scenario: result](imgs/test_8_math_result.png)
+
 I also tested the guardrail:
 
 | Input | Result |
@@ -65,6 +84,35 @@ I also tested the guardrail:
 | A legal threat | Blocked |
 | A credit card number | Blocked |
 | Email or phone number in a reply | Masked |
+
+### Knowledge Bases
+
+I created three Knowledge Bases in the Bedrock console. All of them use Titan Text Embeddings V2 and the S3 Vectors bucket from the CloudFormation stack (`udacity-agentcore-vectors-...`), each with its own index:
+
+| Knowledge Base | S3 prefix | Vector index | ID |
+|---|---|---|---|
+| novamart-returns-policy-kb | `policies/returns/` | `returns-policy-index` | R9ZON7B5VB |
+| novamart-shipping-policy-kb | `policies/shipping/` | `shipping-policy-index` | OS4OMCKYPG |
+| novamart-warranty-policy-kb | `policies/warranty/` | `warranty-policy-index` | KRTQXD8MAH |
+
+![Knowledge Bases list](imgs/kb_list.png)
+
+Returns KB details and data source sync:
+
+![Returns KB](imgs/kb_returns.png)
+![Returns KB sync](imgs/kb_returns_sync.png)
+
+Shipping KB details and data source sync:
+
+![Shipping KB](imgs/kb_shipping.png)
+![Shipping KB sync](imgs/kb_shipping_sync.png)
+
+Warranty KB details and data source sync:
+
+![Warranty KB](imgs/kb_warranty.png)
+![Warranty KB sync](imgs/kb_warranty_sync.png)
+
+### X-Ray
 
 The X-Ray service map shows the orchestrator calling the worker agents and the three Knowledge Bases:
 
